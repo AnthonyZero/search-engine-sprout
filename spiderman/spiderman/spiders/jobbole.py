@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+from scrapy.http import Request
+from urllib import parse
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
     allowed_domains = ['blog.jobbole.com']
-    start_urls = ['http://blog.jobbole.com/114536/']
+    start_urls = ['http://blog.jobbole.com/all-posts/']
 
     def parse(self, response):
+
+        post_urls = response.css("#archive .post-thumb a::attr(href)").extract()
+        for post_url in post_urls:
+            Request(url=post_url, callback=self.parse_content)
+
+    def parse_content(self, response):
         # title = response.xpath('//div[@class="entry-header"]/h1/text()').extract()[0];
         # create_data = response.xpath('//p[@class="entry-meta-hide-on-mobile"]/text()').extract()[0].replace("·","").strip()
         # vote_num = response.xpath('//span[contains(@class,"vote-post-up")]/h10/text()').extract()[0]
