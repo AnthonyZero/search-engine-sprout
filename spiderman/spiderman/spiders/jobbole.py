@@ -3,6 +3,7 @@ import scrapy
 import re
 from scrapy.http import Request
 from urllib import parse
+from spiderman.items import JobboleArticleItem
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
@@ -44,4 +45,16 @@ class JobboleSpider(scrapy.Spider):
         tag_selecter = response.css('p.entry-meta-hide-on-mobile a::text').extract()
         tag_list = [element for element in tag_selecter if not element.strip().endswith('评论')]
         tags = ",".join(tag_list)  # 标签
-        pass
+
+        article_item = JobboleArticleItem()
+        article_item["title"] = title
+        article_item["create_data"] = create_data
+        article_item["url"] = response.url
+        article_item["front_image_url"] = front_image_url
+        article_item["praise_nums"] = praise_num
+        article_item["comment_nums"] = comments_num
+        article_item["fav_nums"] = fav_num
+        article_item["tags"] = tags
+        article_item["content"] = content
+        yield article_item
+
