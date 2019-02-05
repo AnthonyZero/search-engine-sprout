@@ -50,7 +50,7 @@ class JobboleSpider(scrapy.Spider):
         article_item["title"] = title
         article_item["create_data"] = create_data
         article_item["url"] = response.url
-        article_item["front_image_url"] = front_image_url
+        article_item["front_image_url"] = [front_image_url]
         article_item["praise_nums"] = praise_num
         article_item["comment_nums"] = comments_num
         article_item["fav_nums"] = fav_num
