@@ -11,9 +11,11 @@ class JobboleSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        post_urls = response.css("#archive .post-thumb a::attr(href)").extract()
-        for post_url in post_urls:
-            yield Request(url=parse.urljoin(response.url, post_url), callback=self.parse_content)
+        post_nodes = response.css("#archive .post-thumb a")
+        for post_node in post_nodes:
+            image_url = post_node.css("img::attr(src)").extract_first("")
+            post_url = post_node.css("::attr(href)").extract_first("")
+            yield Request(url=parse.urljoin(response.url, post_url), meta={"front_image_url": image_url}, callback=self.parse_content)
 
         # 获取下一页
         next_url = response.css(".next.page-numbers::attr(href)").extract_first("")
@@ -22,6 +24,7 @@ class JobboleSpider(scrapy.Spider):
 
     def parse_content(self, response):
         # 通常css选择器提取数据
+        front_image_url = response.meta.get("front_image_url", "") #文章封面图
         title = response.css('.entry-header h1::text').extract_first()
         create_data = response.css('p.entry-meta-hide-on-mobile::text').extract_first().replace("·","").strip()
         praise_num = response.css('.vote-post-up h10::text').extract_first() #点赞数
