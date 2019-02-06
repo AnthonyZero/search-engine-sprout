@@ -4,6 +4,7 @@ import re
 from scrapy.http import Request
 from urllib import parse
 from spiderman.items import JobboleArticleItem
+from spiderman.utils.common import get_md5
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
@@ -50,6 +51,7 @@ class JobboleSpider(scrapy.Spider):
         article_item["title"] = title
         article_item["create_data"] = create_data
         article_item["url"] = response.url
+        article_item["url_Object_id"] = get_md5(response.url)
         article_item["front_image_url"] = [front_image_url]
         article_item["praise_nums"] = praise_num
         article_item["comment_nums"] = comments_num
