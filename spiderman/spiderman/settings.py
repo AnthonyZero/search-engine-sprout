@@ -66,7 +66,8 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    #'spiderman.pipelines.SpidermanPipeline': 300,
-   'spiderman.pipelines.JsonWithEncodingPipeline' : 300,
+   #'spiderman.pipelines.JsonWithEncodingPipeline' : 300,
+   'spiderman.pipelines.JsonExporterPipeline' : 300,
    #'scrapy.pipelines.images.ImagesPipeline': 1
    'spiderman.pipelines.ArticleImagePipeline': 1
 }
