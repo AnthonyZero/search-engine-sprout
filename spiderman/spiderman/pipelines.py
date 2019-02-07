@@ -10,6 +10,7 @@ import json
 from scrapy.exporters import JsonItemExporter
 import MySQLdb
 import MySQLdb.cursors
+from twisted.enterprise import adbapi
 
 class SpidermanPipeline(object):
     def process_item(self, item, spider):
@@ -64,3 +65,42 @@ class MysqlPipeline(object):
         self.cursor.execute(sql, (item['title'], item['create_date'], item['url'], item['url_object_id'], item['front_image_url'], item['front_image_path']
             , item['praise_nums'], item['comment_nums'], item['fav_nums'], item['tags'], item['content']))
         self.conn.commit()
+
+# 使用twisted将mysql插入变成异步执行
+class MysqlTwistedPipline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
+
+    # 读取配置 构造连接池
+    @classmethod
+    def from_settings(cls, settings):
+        dbparams = dict(
+            host = settings['MYSQL_HOST'],
+            db = settings['MYSQL_DBNAME'],
+            user = settings['MYSQL_USERNAME'],
+            passwd = settings['MYSQL_PASSWORD'],
+            charset='utf8',
+            cursorclass= MySQLdb.cursors.DictCursor,
+            use_unicode=True
+        )
+        dbpool = adbapi.ConnectionPool('MySQLdb', **dbparams)
+        return cls(dbpool)
+
+    # 处理数据
+    def process_item(self, item, spider):
+        query = self.dbpool.runInteraction(self.insert_data, item)
+        query.addErrback(self.handle_error, item, spider)  # 处理异常
+
+    # 插入数据
+    def insert_data(self, cursor, item):
+        sql = """
+                    insert into jobbole_article(title,create_date,url,url_object_id,front_image_url,
+                    front_image_path,praise_nums,comment_nums,fav_nums,tags,content)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
+        cursor.execute(sql, (item['title'], item['create_date'], item['url'], item['url_object_id'], item['front_image_url'],
+            item['front_image_path'], item['praise_nums'], item['comment_nums'], item['fav_nums'], item['tags'], item['content']))
+
+    def handle_error(self, failure, item, spider):
+        # 处理异步插入的异常
+        print(failure)

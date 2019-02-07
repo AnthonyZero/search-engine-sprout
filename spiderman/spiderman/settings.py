@@ -68,7 +68,8 @@ ITEM_PIPELINES = {
    #'spiderman.pipelines.SpidermanPipeline': 300,
    #'spiderman.pipelines.JsonWithEncodingPipeline' : 300,
    #'spiderman.pipelines.JsonExporterPipeline' : 300,
-   'spiderman.pipelines.MysqlPipeline' : 300,
+   #'spiderman.pipelines.MysqlPipeline' : 300,
+   'spiderman.pipelines.MysqlTwistedPipline' : 300,
    #'scrapy.pipelines.images.ImagesPipeline': 1
    'spiderman.pipelines.ArticleImagePipeline': 1
 }
@@ -96,3 +97,9 @@ IMAGES_STORE = os.path.join(project_dir, "images")  # 图片存放路径
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# 数据库配置
+MYSQL_HOST = "mysql_host"
+MYSQL_DBNAME = "search-engine-sprout"
+MYSQL_USERNAME = "root"
+MYSQL_PASSWORD = "password"
