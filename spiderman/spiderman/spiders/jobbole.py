@@ -29,7 +29,7 @@ class JobboleSpider(scrapy.Spider):
         # 通常css选择器提取数据
         front_image_url = response.meta.get("front_image_url", "") #文章封面图
         title = response.css('.entry-header h1::text').extract_first()
-        create_data = response.css('p.entry-meta-hide-on-mobile::text').extract_first().replace("·","").strip()
+        create_date = response.css('p.entry-meta-hide-on-mobile::text').extract_first().replace("·","").strip()
         praise_num = response.css('.vote-post-up h10::text').extract_first() #点赞数
         fav_num = response.css('.bookmark-btn::text').extract_first() #收藏数
         match_re = re.match(".*?(\d+).*", fav_num)
@@ -51,12 +51,12 @@ class JobboleSpider(scrapy.Spider):
         article_item = JobboleArticleItem()
         article_item["title"] = title
         try:
-            create_data = datetime.strptime(create_data, '%Y/%m/%d').date()
+            create_date = datetime.strptime(create_date, '%Y/%m/%d').date()
         except Exception as e:
-            create_data = datetime.now().date()
-        article_item["create_data"] = create_data
+            create_date = datetime.now().date()
+        article_item["create_date"] = create_date
         article_item["url"] = response.url
-        article_item["url_Object_id"] = get_md5(response.url)
+        article_item["url_object_id"] = get_md5(response.url)
         article_item["front_image_url"] = [front_image_url]
         article_item["praise_nums"] = praise_num
         article_item["comment_nums"] = comments_num

@@ -15,9 +15,9 @@ class SpidermanItem(scrapy.Item):
 
 class JobboleArticleItem(scrapy.Item):
     title = scrapy.Field()
-    create_data = scrapy.Field()
+    create_date = scrapy.Field()
     url = scrapy.Field()
-    url_Object_id = scrapy.Field()
+    url_object_id = scrapy.Field()
     front_image_url = scrapy.Field()
     front_image_path = scrapy.Field()
     praise_nums = scrapy.Field()

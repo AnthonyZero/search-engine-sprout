@@ -67,7 +67,8 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
    #'spiderman.pipelines.SpidermanPipeline': 300,
    #'spiderman.pipelines.JsonWithEncodingPipeline' : 300,
-   'spiderman.pipelines.JsonExporterPipeline' : 300,
+   #'spiderman.pipelines.JsonExporterPipeline' : 300,
+   'spiderman.pipelines.MysqlPipeline' : 300,
    #'scrapy.pipelines.images.ImagesPipeline': 1
    'spiderman.pipelines.ArticleImagePipeline': 1
 }
