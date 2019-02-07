@@ -5,6 +5,7 @@ from scrapy.http import Request
 from urllib import parse
 from spiderman.items import JobboleArticleItem
 from spiderman.utils.common import get_md5
+from datetime import datetime
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
@@ -49,6 +50,10 @@ class JobboleSpider(scrapy.Spider):
 
         article_item = JobboleArticleItem()
         article_item["title"] = title
+        try:
+            create_data = datetime.strptime(create_data, '%Y/%m/%d').date()
+        except Exception as e:
+            create_data = datetime.now().date()
         article_item["create_data"] = create_data
         article_item["url"] = response.url
         article_item["url_Object_id"] = get_md5(response.url)
