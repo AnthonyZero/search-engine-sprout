@@ -44,9 +44,10 @@ class JsonExporterPipeline(object):
 class ArticleImagePipeline(ImagesPipeline):
 
     def item_completed(self, results, item, info):
-        for ok, value in results:
-            image_url_path = value['path']
-        item['front_image_path'] = image_url_path
+        if "front_image_url" in item:  # 如果item中存在front_image_url 字段就处理
+            for ok, value in results:
+                image_url_path = value['path']
+            item['front_image_path'] = image_url_path
         return item
 
 # mysql 同步方式 保存数据到db
