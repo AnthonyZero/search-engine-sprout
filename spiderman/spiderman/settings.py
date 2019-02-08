@@ -73,7 +73,7 @@ ITEM_PIPELINES = {
    #'scrapy.pipelines.images.ImagesPipeline': 1
    'spiderman.pipelines.ArticleImagePipeline': 1
 }
-IMAGES_URLS_FIELD = "front_image_url"
+IMAGES_URLS_FIELD = "front_image_url" # 指定图片下载URL
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir, "images")  # 图片存放路径
 
@@ -99,7 +99,7 @@ IMAGES_STORE = os.path.join(project_dir, "images")  # 图片存放路径
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # 数据库配置
-MYSQL_HOST = "mysql_host"
+MYSQL_HOST = "host"
 MYSQL_DBNAME = "search-engine-sprout"
 MYSQL_USERNAME = "root"
 MYSQL_PASSWORD = "password"

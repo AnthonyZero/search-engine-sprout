@@ -93,13 +93,18 @@ class MysqlTwistedPipline(object):
 
     # 插入数据
     def insert_data(self, cursor, item):
-        sql = """
-                    insert into jobbole_article(title,create_date,url,url_object_id,front_image_url,
-                    front_image_path,praise_nums,comment_nums,fav_nums,tags,content)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """
-        cursor.execute(sql, (item['title'], item['create_date'], item['url'], item['url_object_id'], item['front_image_url'],
-            item['front_image_path'], item['praise_nums'], item['comment_nums'], item['fav_nums'], item['tags'], item['content']))
+        # sql = """
+        #             insert into jobbole_article(title,create_date,url,url_object_id,front_image_url,
+        #             front_image_path,praise_nums,comment_nums,fav_nums,tags,content)
+        #             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        #         """
+        # cursor.execute(sql, (item['title'], item['create_date'], item['url'], item['url_object_id'], item['front_image_url'],
+        #     item['front_image_path'], item['praise_nums'], item['comment_nums'], item['fav_nums'], item['tags'], item['content']))
+
+        # 执行具体的插入
+        # 根据不同的item 构建不同的sql语句并插入到mysql中
+        insert_sql, params = item.get_insert_sql()
+        cursor.execute(insert_sql, params)
 
     def handle_error(self, failure, item, spider):
         # 处理异步插入的异常
