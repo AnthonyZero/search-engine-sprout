@@ -3,8 +3,8 @@ import scrapy
 import re
 from scrapy.http import Request
 from urllib import parse
-from spiderman.items import JobboleArticleItem,ArticleItemLoader
-from spiderman.utils.common import get_md5
+from items import JobboleArticleItem,ArticleItemLoader
+from utils.common import get_md5
 from datetime import datetime
 from scrapy.loader import ItemLoader
 
