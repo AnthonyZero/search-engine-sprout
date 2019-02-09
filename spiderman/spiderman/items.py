@@ -95,11 +95,18 @@ def remove_splash(value):
     #去掉多余的斜线
     return value.replace("/","")
 
-# 处理拉钩的地址
+# 处理拉勾的地址
 def handler_addr(value):
     addr_list = value.split("\n")
     addr_list = [item.strip() for item in addr_list if item.strip() != '查看地图']
     return "".join(addr_list)
+
+def handler_publish_time(value):
+    publish_time_list = value.split(" ")
+    if (len(publish_time_list) > 0):
+        return publish_time_list[0]
+    else:
+        return value
 
 class LagouJobItem(scrapy.Item):
     #拉勾网职位信息
@@ -117,7 +124,9 @@ class LagouJobItem(scrapy.Item):
         input_processor=MapCompose(remove_splash)
     )
     job_type = scrapy.Field()
-    publish_time = scrapy.Field()
+    publish_time = scrapy.Field(
+        input_processor = MapCompose(handler_publish_time)
+    )
     job_advantage = scrapy.Field()
     job_desc = scrapy.Field()
     job_addr = scrapy.Field(
