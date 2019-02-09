@@ -145,7 +145,7 @@ class LagouJobItem(scrapy.Item):
             insert into lagou_job(title, url, url_object_id, salary, job_city, work_years, degree_need,
             job_type, publish_time, job_advantage, job_desc, job_addr, company_name, company_url,
             tags, crawl_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON DUPLICATE KEY UPDATE salary=VALUES(salary), job_desc=VALUES(job_desc)
+            ON DUPLICATE KEY UPDATE work_years=VALUES(work_years), degree_need = VALUES(degree_need),salary=VALUES(salary), job_desc=VALUES(job_desc)
         """
         params = (
             self["title"], self["url"], self["url_object_id"], self["salary"], self["job_city"],
