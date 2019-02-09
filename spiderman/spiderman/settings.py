@@ -109,4 +109,8 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefo
 MYSQL_HOST = "host"
 MYSQL_DBNAME = "search-engine-sprout"
 MYSQL_USERNAME = "root"
-MYSQL_PASSWORD = "password"
+MYSQL_PASSWORD = "root"
+
+# 时间格式
+SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+SQL_DATE_FORMAT = "%Y-%m-%d"
