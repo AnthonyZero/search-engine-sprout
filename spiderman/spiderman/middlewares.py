@@ -6,6 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from fake_useragent import UserAgent
 
 
 class SpidermanSpiderMiddleware(object):
@@ -101,3 +102,22 @@ class SpidermanDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+# 随机更换user-agent
+class RandomUserAgentMiddlware(object):
+
+    def __init__(self, crawler):
+        super(RandomUserAgentMiddlware, self).__init__() #父类初始
+        self.ua = UserAgent() # 使用github fake-useragent  例如：ua.random, ua.ie就可获取随机的用户代理
+        self.type = crawler.settings.get("RANDOM_UA_TYPE", "random") # 获取配置的属性
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    # 处理engine -> downloader中的所有request 单流向
+    def process_request(self, request, spider):
+        def get_user_agent():
+            return getattr(self.ua, self.type)  # 相当于us.random
+        random_useragent = get_user_agent()
+        request.headers.setdefault(b'User-Agent', random_useragent)
