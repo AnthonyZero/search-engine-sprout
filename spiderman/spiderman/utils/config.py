@@ -10,11 +10,11 @@ from configparser import ConfigParser
 
 
 class ConfigUtils(object):
-    def __init__(self):
+    def __init__(self, filename):
         super(ConfigUtils, self).__init__()
         try:
             self.config = ConfigParser()
-            self.config.read('config.ini')
+            self.config.read(filename)
         except IOError as e:
             print("Error: 没有找到文件或读取文件失败")
 
@@ -22,7 +22,7 @@ class ConfigUtils(object):
         return self.config.get(section, key)
 
 if __name__ == '__main__':
-    co = ConfigUtils()
+    co = ConfigUtils('../config.ini')
     print(co.config.sections())
     print(co.config.options('mysql-database'))
     print(co.config.get('mysql-database', 'host'))
