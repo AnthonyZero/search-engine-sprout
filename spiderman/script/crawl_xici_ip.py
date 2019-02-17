@@ -10,8 +10,15 @@
 import requests
 from scrapy.selector import Selector
 import MySQLdb
+from spiderman.spiderman.utils.config import ConfigUtils
 
-conn = MySQLdb.connect(host="host", user="root", passwd="password", db="search-engine-sprout", charset="utf8")
+co = ConfigUtils("../spiderman/config.ini") # 读取配置文件属性
+host = co.get_value('mysql-database','host')
+user = co.get_value('mysql-database','user')
+passwd = co.get_value('mysql-database','password')
+db = co.get_value('mysql-database','db')
+charset = co.get_value('mysql-database','charset')
+conn = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db, charset=charset)
 cursor = conn.cursor()
 
 def crawl_ips():
