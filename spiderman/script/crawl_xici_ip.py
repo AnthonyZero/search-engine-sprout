@@ -10,9 +10,9 @@
 import requests
 from scrapy.selector import Selector
 import MySQLdb
-from spiderman.spiderman.utils.config import ConfigUtils
+from utils.config import ConfigUtils
 
-co = ConfigUtils("../spiderman/config.ini") # 读取配置文件属性
+co = ConfigUtils() # 读取配置文件属性
 host = co.get_value('mysql-database','host')
 user = co.get_value('mysql-database','user')
 passwd = co.get_value('mysql-database','password')
