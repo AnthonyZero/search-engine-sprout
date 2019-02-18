@@ -85,7 +85,22 @@ class GetIP(object):
                 self.delete_ip(ip)
                 return False
 
-
+    def get_random_ip(self):
+        # 从数据库中随机获取一个可用的ip
+        random_sql = """
+             SELECT ip,port,proxy_type FROM proxy_ip ORDER BY RAND() LIMIT 1
+        """
+        result = cursor.execute(random_sql)
+        for ip_info in cursor.fetchall():
+            ip = ip_info[0]
+            port = ip_info[1]
+            proxy_type = ip_info[2]
+            judge_result = self.judge_ip(proxy_type, ip, port)
+            if judge_result:
+                return "{0}://{1}:{2}".format(proxy_type, ip, port)
+            else:
+                return self.get_random_ip()
 
 if __name__ == '__main__':
-    crawl_ips()
+    getip = GetIP()
+    getip.get_random_ip()
