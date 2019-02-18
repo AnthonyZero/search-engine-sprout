@@ -52,5 +52,15 @@ def crawl_ips():
             cursor.execute(sql, params)
             conn.commit()
 
+class GetIP(object):
+    def delete_ip(self, ip):
+        # 删除数据库中无效的ip
+        delete_sql = """
+                   delete from proxy_ip where ip='{0}'
+               """.format(ip)
+        cursor.execute(delete_sql)
+        conn.commit()
+        return True
+
 if __name__ == '__main__':
     crawl_ips()
