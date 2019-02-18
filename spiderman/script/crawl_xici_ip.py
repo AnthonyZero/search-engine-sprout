@@ -62,5 +62,30 @@ class GetIP(object):
         conn.commit()
         return True
 
+    def judge_ip(self, proxy_type, ip, port):
+        # 判断ip是否有效
+        http_url = "http://www.baidu.com"
+        proxy_url = "{0}://{1}:{2}".format(proxy_type, ip, port)
+        try:
+            proxy_dict = {
+                proxy_type: proxy_url,
+            }
+            response = requests.get(http_url, proxies=proxy_dict)
+        except Exception as e:
+            print("invalid ip and port")
+            self.delete_ip(ip)
+            return False
+        else:
+            code = response.status_code # 根据访问百度状态码判断是否有效
+            if code >= 200 and code < 300:
+                print("effective ip")
+                return True
+            else:
+                print("invalid ip and port")
+                self.delete_ip(ip)
+                return False
+
+
+
 if __name__ == '__main__':
     crawl_ips()
