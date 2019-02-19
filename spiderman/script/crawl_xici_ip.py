@@ -62,21 +62,22 @@ class GetIP(object):
         conn.commit()
         return True
 
-    def judge_ip(self, proxy_type, ip, port):
-        # 判断ip是否有效
-        http_url = "http://www.baidu.com"
-        proxy_url = "{0}://{1}:{2}".format(proxy_type, ip, port)
+    def judge_ip(self, ip, port):
+        # 判断ip是否有效 https://icanhazip.com/
+        http_url = "http://icanhazip.com/"
+        proxy_url = "http://{0}:{1}".format(ip, port)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36"}
         try:
             proxy_dict = {
-                proxy_type: proxy_url,
+                "http": proxy_url,
             }
-            response = requests.get(http_url, proxies=proxy_dict)
+            response = requests.get(http_url, headers=headers, proxies=proxy_dict, timeout=10)
         except Exception as e:
             print("invalid ip and port")
             self.delete_ip(ip)
             return False
         else:
-            code = response.status_code # 根据访问百度状态码判断是否有效
+            code = response.status_code # 根据状态码判断是否有效
             if code >= 200 and code < 300:
                 print("effective ip")
                 return True
@@ -94,10 +95,9 @@ class GetIP(object):
         for ip_info in cursor.fetchall():
             ip = ip_info[0]
             port = ip_info[1]
-            proxy_type = ip_info[2]
-            judge_result = self.judge_ip(proxy_type, ip, port)
+            judge_result = self.judge_ip(ip, port)
             if judge_result:
-                return "{0}://{1}:{2}".format(proxy_type, ip, port)
+                return "http://{0}:{1}".format(ip, port)
             else:
                 return self.get_random_ip()
 
