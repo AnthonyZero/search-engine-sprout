@@ -12,13 +12,21 @@ from selenium import webdriver
 from scrapy.selector import Selector
 import time
 
-# 微博登陆
+# 运行JS脚本 进行滚动下滑
 browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
-browser.get('https://weibo.com/')
-time.sleep(10)
-browser.find_element_by_css_selector('#loginname').send_keys('username')
-browser.find_element_by_css_selector('.info_list.password input[name="password"]').send_keys('password')
-browser.find_element_by_css_selector(".info_list.login_btn a[node-type='submitBtn']").click()
+browser.get('https://www.oschina.net/blog')
+time.sleep(5)
+for i in range(5): # 向下滚动5次
+    browser.execute_script("window.scrollTo(0, document.body.scrollHeight); var lenOfPage=document.body.scrollHeight; return lenOfPage;")
+    time.sleep(5)
+
+# 微博登陆
+# browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
+# browser.get('https://weibo.com/')
+# time.sleep(10)
+# browser.find_element_by_css_selector('#loginname').send_keys('username')
+# browser.find_element_by_css_selector('.info_list.password input[name="password"]').send_keys('password')
+# browser.find_element_by_css_selector(".info_list.login_btn a[node-type='submitBtn']").click()
 
 # 知乎登陆
 # browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
