@@ -10,6 +10,7 @@
 # Selenium requires a driver to interface with the chosen browser
 from selenium import webdriver
 from scrapy.selector import Selector
+import time
 
 # 知乎登陆
 # browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
@@ -24,7 +25,7 @@ from scrapy.selector import Selector
 # 获取天猫商品促销价
 # browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
 # browser.get('https://detail.tmall.com/item.htm?spm=a230r.1.14.3.yYBVG6&id=538286972599&cm_id=140105335569ed55e27b&abbucket=15&sku_properties=10004:709990523;5919063:6536025')
-# print(browser.page_source)
+# time.sleep(10) #get未加载完成 故sleep 10秒
 # selector = Selector(text=browser.page_source)
 # goods_value = selector.css('.tm-price-panel .tm-price::text').extract_first()
 # print("该商品原价为:", goods_value)
