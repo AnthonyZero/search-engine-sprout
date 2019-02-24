@@ -12,13 +12,20 @@ from selenium import webdriver
 from scrapy.selector import Selector
 import time
 
+#设置chromedriver不加载图片
+chrome_opt = webdriver.ChromeOptions()
+prefs = {"profile.managed_default_content_settings.images":2}
+chrome_opt.add_experimental_option("prefs", prefs)
+browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe', options=chrome_opt)
+browser.get('https://www.tmall.com/')
+
 # 运行JS脚本 进行滚动下滑
-browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
-browser.get('https://www.oschina.net/blog')
-time.sleep(5)
-for i in range(5): # 向下滚动5次
-    browser.execute_script("window.scrollTo(0, document.body.scrollHeight); var lenOfPage=document.body.scrollHeight; return lenOfPage;")
-    time.sleep(5)
+# browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
+# browser.get('https://www.oschina.net/blog')
+# time.sleep(5)
+# for i in range(5): # 向下滚动5次
+#     browser.execute_script("window.scrollTo(0, document.body.scrollHeight); var lenOfPage=document.body.scrollHeight; return lenOfPage;")
+#     time.sleep(5)
 
 # 微博登陆
 # browser = webdriver.Chrome(executable_path='F:/tmp/chromedriver.exe')
