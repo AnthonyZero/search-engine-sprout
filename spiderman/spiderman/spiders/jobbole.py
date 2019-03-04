@@ -19,7 +19,7 @@ class JobboleSpider(scrapy.Spider):
     def __init__(self):
         self.browser = webdriver.Chrome(executable_path="F:/tmp/chromedriver.exe")
         super(JobboleSpider,self).__init__()
-        dispatcher.connect(receiver=self.handle_spider_closed, signals=signals.spider_closed) #spider退出时候候的信号
+        dispatcher.connect(self.handle_spider_closed, signals.spider_closed) #spider退出时候候的信号
 
     # 当爬虫结束的时候 关闭chrome
     def handle_spider_closed(self):
