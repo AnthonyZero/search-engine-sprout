@@ -55,7 +55,7 @@ DOWNLOAD_DELAY = 3
 DOWNLOADER_MIDDLEWARES = {
    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None, #默认的取消
    'spiderman.middlewares.RandomUserAgentMiddlware': 600,
-   #'spiderman.middlewares.RandomProxyMiddleware': 600
+   'spiderman.middlewares.RandomProxyMiddleware': 600,
    'spiderman.middlewares.JSPageMiddleware': 1,
 }
 
