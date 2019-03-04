@@ -8,6 +8,8 @@
 from scrapy import signals
 from fake_useragent import UserAgent
 from crawl_xici_ip import GetIP
+from scrapy.http import HtmlResponse
+import time
 
 
 class SpidermanSpiderMiddleware(object):
@@ -130,3 +132,13 @@ class RandomProxyMiddleware(object):
         get_ip = GetIP()
         random_ip = get_ip.get_random_ip()
         request.meta["proxy"] = random_ip
+
+# 通过chrome请求动态网页
+class JSPageMiddleware(object):
+
+    def process_request(self, request, spider):
+        if spider.name == 'jobbole':
+            spider.browser.get(request.url)
+            time.sleep(3)
+            # 获取之后 直接返回HTMLResponse 不用再交给下载器download
+            return HtmlResponse(body=spider.browser.page_source,url = spider.browser.current_url, encoding='utf-8', request = request)
