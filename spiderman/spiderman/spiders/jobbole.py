@@ -7,11 +7,24 @@ from items import JobboleArticleItem,ArticleItemLoader
 from utils.common import get_md5
 from datetime import datetime
 from scrapy.loader import ItemLoader
+from selenium import webdriver
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
+
+    def __init__(self):
+        self.browser = webdriver.Chrome(executable_path="F:/tmp/chromedriver.exe")
+        super(JobboleSpider,self).__init__()
+        dispatcher.connect(receiver=self.handle_spider_closed, signals=signals.spider_closed) #spider退出时候候的信号
+
+    # 当爬虫结束的时候 关闭chrome
+    def handle_spider_closed(self):
+        print("spider closed")
+        self.browser.quit()
 
     def parse(self, response):
 
