@@ -138,6 +138,9 @@ class JSPageMiddleware(object):
 
     def process_request(self, request, spider):
         if spider.name == 'jobbole':
+            # from pyvirtualdisplay import Display 在liunx无界面使用
+            # display = Display(visible=0, size=(800, 600))
+            # display.start()
             spider.browser.get(request.url)
             time.sleep(3)
             # 获取之后 直接返回HTMLResponse 不用再交给下载器download
