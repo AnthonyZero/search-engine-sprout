@@ -16,17 +16,26 @@ class JobboleSpider(scrapy.Spider):
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
 
-    def __init__(self):
-        self.browser = webdriver.Chrome(executable_path="F:/tmp/chromedriver.exe")
-        super(JobboleSpider,self).__init__()
-        dispatcher.connect(self.handle_spider_closed, signals.spider_closed) #spider退出时候候的信号
+    # def __init__(self):
+    #     self.browser = webdriver.Chrome(executable_path="F:/tmp/chromedriver.exe")
+    #     super(JobboleSpider,self).__init__()
+    #     dispatcher.connect(self.handle_spider_closed, signals.spider_closed) #spider退出时候候的信号
+    #
+    # # 当爬虫结束的时候 关闭chrome
+    # def handle_spider_closed(self):
+    #     print("spider closed")
+    #     self.browser.quit()
 
-    # 当爬虫结束的时候 关闭chrome
-    def handle_spider_closed(self):
-        print("spider closed")
-        self.browser.quit()
+    # 收集伯乐在线所有404的url以及404页面数
+    handle_httpstatus_list = [404]
+    def __init__(self):
+        self.fail_urls = []
 
     def parse(self, response):
+
+        if response.status == 404:
+            self.fail_urls.append(response.url)
+            self.crawler.stats.inc_value("fail_url_total") # stats收集器
 
         post_nodes = response.css("#archive .post-thumb a")
         for post_node in post_nodes:
