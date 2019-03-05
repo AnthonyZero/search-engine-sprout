@@ -30,6 +30,10 @@ class JobboleSpider(scrapy.Spider):
     handle_httpstatus_list = [404]
     def __init__(self):
         self.fail_urls = []
+        dispatcher.connect(self.handle_spider_closed, signals.spider_closed)  #信号
+
+    def handle_spider_closed(self, spider, reason):
+        self.crawler.stats.set_value("failed_urls", ",".join(self.fail_urls))
 
     def parse(self, response):
 
